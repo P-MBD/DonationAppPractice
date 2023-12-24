@@ -29,6 +29,7 @@
     "react-native-svg": "^14.1.0",
     "react-redux": "^9.0.4",
     "redux": "^5.0.1",
+    "redux-logger": "^3.0.6",
     "yarn": "^1.22.21"
   },
   "devDependencies": {
