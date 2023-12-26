@@ -1,12 +1,17 @@
 import React from 'react';
-import {Pressable, SafeAreaView,View, Text, ScrollView, Image} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  ScrollView,
+  Image,
+  Pressable,
+} from 'react-native';
 
 // Importing the useSelector and useDispatch hooks from the React Redux library
 // The useSelector hook allows us to select and retrieve data from the store
 // The useDispatch hook allows us to dispatch actions to update the store
 import {useDispatch, useSelector} from 'react-redux';
-
-import {resetToInitialState, updateFirstName} from '../../redux/reducers/User';
 
 import Header from '../../components/Header/Header';
 
@@ -22,9 +27,8 @@ const Home = () => {
   // Using the useDispatch hook to get a reference to the dispatch function
   // This function allows us to dispatch actions to update the store
   const dispatch = useDispatch();
-  dispatch(resetToInitialState());
-  console.log(user);
-
+  const categories = useSelector(state => state.categories);
+  console.log(categories);
   return (
     <SafeAreaView style={[globalStyle.backgroundWhite, globalStyle.flex]}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -49,7 +53,7 @@ const Home = () => {
         <Pressable style={style.highlightedImageContainer}>
           <Image
             style={style.highlightedImage}
-            source={require('../../assets/images/highlighted-image.png')}
+            source={require('../../assets/images/highlighted_image.png')}
             resizeMode={'contain'}
           />
         </Pressable>
