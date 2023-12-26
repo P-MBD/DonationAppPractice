@@ -22,7 +22,10 @@ const Search = props => {
                     icon={faSearch}
                     color={'#25C0FF'}
                     size={scaleFontSize(22)}/>
-              <TextInput ref={textInputRef} style={style.searchInput}
+              <TextInput 
+              placeholder={props.placeholder}
+              ref={textInputRef} 
+              style={style.searchInput}
               value={search}
               onChangeText = {(value)=> handleSearch(value)}
               />
@@ -31,7 +34,8 @@ const Search = props => {
 };
 
 Search.defaultProps= {
-    onSearch: () =>{}
+    onSearch: () =>{},
+    placeholder: 'Search'
 };
 Search.propTypes={
     onPress:PropTypes.func,
