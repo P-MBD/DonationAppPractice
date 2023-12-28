@@ -1,33 +1,48 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  View,
-  Text,
-  ScrollView,
-  Image,
-  Pressable,
-} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {SafeAreaView,View,Text,ScrollView,Image,Pressable,FlatList,} from 'react-native';
 
 // Importing the useSelector and useDispatch hooks from the React Redux library
 // The useSelector hook allows us to select and retrieve data from the store
 // The useDispatch hook allows us to dispatch actions to update the store
 import {useDispatch, useSelector} from 'react-redux';
-
 import Header from '../../components/Header/Header';
-
+import Search from '../../components/Search/Search';
+import Tab from '../../components/Tab/Tab';
+import {updateSelectedCategoryId} from '../../redux/reducers/Categories';
 import globalStyle from '../../assets/styles/globalStyle';
 import style from './style';
-import Search from '../../components/Search/Search';
-
+import { getInstallerPackageNameSync } from 'react-native-device-info';
 const Home = () => {
   // Using the useSelector hook to select the "user" slice of the store
   // This will return the user object containing firstName, lastName and userId fields
+  const categories = useSelector(state => state.categories);
+  const donations = useSelector(state => state.donations);
   const user = useSelector(state => state.user);
-
   // Using the useDispatch hook to get a reference to the dispatch function
   // This function allows us to dispatch actions to update the store
   const dispatch = useDispatch();
-  const categories = useSelector(state => state.categories);
+  const [categoryPage, setCategoryPage] = useState(1);
+  const [categoryList, setCategoryList]= useState([]);
+  const[isLoadingCategories, setIsLoadingCategories] = useState(false);
+  const categoryPageSize= 4;
+
+console.log('this is our current donation state', donations);
+  useEffect(()=> {
+    setIsLoadingCategories(true);
+    setCategoryList(pagination(categories.categories, categoryPage, categoryPageSize));
+    setCategoryPage (prev => prev + 1);
+    setIsLoadingCategories(false);
+  },[])
+
+  const pagination = (item, pageNumber, pageSize) => {
+    const startIndex= (pageNumber - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    if(startIndex >= item.length){
+      return [];
+    }
+    return item.slice(startIndex, endIndex);
+  }
+
   console.log(categories);
   return (
     <SafeAreaView style={[globalStyle.backgroundWhite, globalStyle.flex]}>
@@ -57,6 +72,42 @@ const Home = () => {
             resizeMode={'contain'}
           />
         </Pressable>
+        <View style={style.categoryHeader}>
+          <Header title={'Select Category'} type={2} />
+        </View>
+        <View style={style.categories}>
+          <FlatList
+            onEndReachedThreshold={0.5}
+            onEndReached={() => {
+              if (isLoadingCategories) {
+                return;
+              }
+              console.log(
+                'User has reached the end and we are getting more data for page number',
+                categoryPage
+              );
+              let newData = pagination(categories.categories, categoryPage, categoryPageSize);
+              if(newData.length> 0){
+                setCategoryList(prevState => [...prevState, ...newData]);
+                setCategoryPage(prevState => prevState + 1);
+              }
+              setIsLoadingCategories(false);
+            }}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            data={categoryList}
+            renderItem={({item}) => (
+              <View style={style.categoryItem} key={item.categoryId}>
+                <Tab
+                  tabId={item.categoryId}
+                  onPress={value => dispatch(updateSelectedCategoryId(value))}
+                  title={item.name}
+                  isInactive={item.categoryId !== categories.selectedCategoryId}
+                />
+              </View>
+            )}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

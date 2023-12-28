@@ -8,10 +8,9 @@ import {
 const style = StyleSheet.create({
   badge: {
     backgroundColor: '#145855',
-    height: verticalScale(35),
+    height: verticalScale(22),
     justifyContent: 'center',
     borderRadius: horizontalScale(50),
-    textAlign: 'center',
   },
   title: {
     fontFamily: 'Inter',
@@ -20,7 +19,6 @@ const style = StyleSheet.create({
     lineHeight: scaleFontSize(12),
     color: '#FFFFFF',
     textAlign: 'center',
-
   },
 });
 

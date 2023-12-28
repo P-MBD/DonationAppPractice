@@ -8,12 +8,12 @@ import {
 const style = StyleSheet.create({
   tab: {
     backgroundColor: '#2979F2',
-    height: verticalScale(55),
+    height: verticalScale(50),
     justifyContent: 'center',
     borderRadius: horizontalScale(50),
   },
-  inactiveTab:{
-    backgroundColor:'#F3F5F9',
+  inactiveTab: {
+    backgroundColor: '#F3F5F9',
   },
   title: {
     fontFamily: 'Inter',
@@ -23,9 +23,9 @@ const style = StyleSheet.create({
     color: '#FFFFFF',
     textAlign: 'center',
   },
-  inactiveTitle:{
-    color:'#79869F',
-  }
+  inactiveTitle: {
+    color: '#79869F',
+  },
 });
 
 export default style;
