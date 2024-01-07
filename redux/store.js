@@ -12,6 +12,7 @@ import User from './reducers/User';
 // Importing the Categories reducer from the ./reducers/Categories file
 import Categories from './reducers/Categories';
 import Donations from './reducers/Donations';
+
 // Creating a rootReducer that combines all reducers in the app
 const rootReducer = combineReducers({
   // Here, we're combining the User reducer and calling it "user"
