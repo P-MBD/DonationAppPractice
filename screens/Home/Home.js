@@ -17,6 +17,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import Header from '../../components/Header/Header';
 import Search from '../../components/Search/Search';
 import Tab from '../../components/Tab/Tab';
+import SingleDonationItem from '../../components/SingleDonationItem/SingleDonationItem';
+
 import {updateSelectedCategoryId} from '../../redux/reducers/Categories';
 
 import globalStyle from '../../assets/styles/globalStyle';
@@ -32,18 +34,18 @@ const Home = () => {
   const dispatch = useDispatch();
   const categories = useSelector(state => state.categories);
   const donations = useSelector(state => state.donations);
-  const [donationItems, setDonationItems] = useState();
+
+  const [donationItems, setDonationItems] = useState([]);
   const [categoryPage, setCategoryPage] = useState(1);
   const [categoryList, setCategoryList] = useState([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);
   const categoryPageSize = 4;
- 
+
   useEffect(() => {
     const items = donations.items.filter(value =>
       value.categoryIds.includes(categories.selectedCategoryId),
     );
     setDonationItems(items);
-    console.log(items);
   }, [categories.selectedCategoryId]);
 
   useEffect(() => {
@@ -133,6 +135,27 @@ const Home = () => {
             )}
           />
         </View>
+        {donationItems.length > 0 && (
+          <View style={style.donationItemsContainer}>
+            {donationItems.map(value => (
+              <SingleDonationItem
+                onPress={selectedDonationId => {
+                  console.log(selectedDonationId);
+                }}
+                donationItemId={value.donationItemId}
+                uri={value.image}
+                donationTitle={value.name}
+                badgeTitle={
+                  categories.categories.filter(
+                    val => val.categoryId === categories.selectedCategoryId,
+                  )[0].name
+                }
+                key={value.donationItemId}
+                price={parseFloat(value.price)}
+              />
+            ))}
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
