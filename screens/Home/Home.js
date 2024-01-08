@@ -19,12 +19,14 @@ import Search from '../../components/Search/Search';
 import Tab from '../../components/Tab/Tab';
 import SingleDonationItem from '../../components/SingleDonationItem/SingleDonationItem';
 
+import {Routes} from '../../navigation/Routes';
 import {updateSelectedCategoryId} from '../../redux/reducers/Categories';
+import {updateSelectedDonationId} from '../../redux/reducers/Donations';
 
 import globalStyle from '../../assets/styles/globalStyle';
 import style from './style';
 
-const Home = () => {
+const Home = ({navigation}) => {
   // Using the useSelector hook to select the "user" slice of the store
   // This will return the user object containing firstName, lastName and userId fields
   const user = useSelector(state => state.user);
@@ -138,20 +140,20 @@ const Home = () => {
         {donationItems.length > 0 && (
           <View style={style.donationItemsContainer}>
             {donationItems.map(value => (
-              <View  key={value.donationItemId} style={style.singleDonationItem}>
+              <View key={value.donationItemId} style={style.singleDonationItem}>
                 <SingleDonationItem
                   onPress={selectedDonationId => {
-                  console.log(selectedDonationId);
-                }}
-                donationItemId={value.donationItemId}
-                uri={value.image}
-                donationTitle={value.name}
-                badgeTitle={
-                  categories.categories.filter(
-                    val => val.categoryId === categories.selectedCategoryId,
-                  )[0].name
-                }
-               
+                    dispatch(updateSelectedDonationId(selectedDonationId));
+                    navigation.navigate(Routes.SingleDonationItem);
+                  }}
+                  donationItemId={value.donationItemId}
+                  uri={value.image}
+                  donationTitle={value.name}
+                  badgeTitle={
+                    categories.categories.filter(
+                      val => val.categoryId === categories.selectedCategoryId,
+                    )[0].name
+                  }
                   price={parseFloat(value.price)}
                 />
               </View>
