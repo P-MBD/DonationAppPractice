@@ -138,8 +138,9 @@ const Home = () => {
         {donationItems.length > 0 && (
           <View style={style.donationItemsContainer}>
             {donationItems.map(value => (
-              <SingleDonationItem
-                onPress={selectedDonationId => {
+              <View  key={value.donationItemId} style={style.singleDonationItem}>
+                <SingleDonationItem
+                  onPress={selectedDonationId => {
                   console.log(selectedDonationId);
                 }}
                 donationItemId={value.donationItemId}
@@ -150,9 +151,10 @@ const Home = () => {
                     val => val.categoryId === categories.selectedCategoryId,
                   )[0].name
                 }
-                key={value.donationItemId}
-                price={parseFloat(value.price)}
-              />
+               
+                  price={parseFloat(value.price)}
+                />
+              </View>
             ))}
           </View>
         )}
