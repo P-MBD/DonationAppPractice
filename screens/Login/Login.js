@@ -10,12 +10,15 @@ import style from './style';
 import globalStyle from '../../assets/styles/globalStyle';
 
 import {Routes} from '../../navigation/Routes';
-
+import { useDispatch } from 'react-redux';
+import { resetToInitialState } from '../../redux/reducers/User';
+import {logIn} from '../../redux/reducers/User';
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
+  const dispatch = useDispatch();
+  dispatch(resetToInitialState());
   return (
     <SafeAreaView style={[globalStyle.backgroundWhite, globalStyle.flex]}>
       <ScrollView
@@ -47,6 +50,7 @@ const Login = ({navigation}) => {
               let user = await loginUser(email, password);
               if (!user.status) {
                 setError(user.error);
+                dispatch(logIn(user.data));
               } else {
                 setError('');
                 navigation.navigate(Routes.Home);
