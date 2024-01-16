@@ -19,6 +19,9 @@ export const User = createSlice({
     resetToInitialState: () => {
       return initialState;
     },
+    updateToken: (state, action) => {
+      state.token = action.payload;
+    },
   },
 });
 
